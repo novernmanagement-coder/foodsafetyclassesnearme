@@ -74,7 +74,7 @@
   <h2>Take ServSafe online, from anywhere</h2>
   <p class="funnel__lead">Online students don't need a local class. Food Safety Made Easy gets you studied, scheduled with an online proctor and certified from home.</p>
   <div class="btn-row">
-    <a class="btn btn--green btn--lg" href="https://foodsafetymadeeasy.com/">See the online option</a>
+    <a class="btn btn--green btn--lg" href="https://foodsafetymadeeasy.com/servsafe-classes-indiana/">See the online option</a>
     <button class="btn btn--line btn--lg" data-restart>I'd rather go in person</button>
   </div>
 </section>
@@ -114,6 +114,7 @@
 
 <script>
 const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Made Easy)", "type": "instructor", "outside": false, "phone": "(765) 706-4304", "booking_url": "https://foodsafetymadeeasy.com/indiana-booking_landing/", "location": "Comes to you, or Noblesville", "miles": 22.0, "comes_to_you": true, "appointment_days": "2", "next_classes": ["2026-11-23", "2026-11-24", "2026-11-30", "2026-12-02", "2026-12-04"], "price": 119.0, "class_hours": "4", "includes_exam": true, "includes_book": false, "results": "Same day", "languages": ["English"], "years": "20", "last_checked": "2026-11-19"}, {"id": "FSME-IN-00144", "name": "Jose Sanchez T (Doc Bits restaurante)", "type": "instructor", "outside": false, "phone": "(317) 912-8343", "booking_url": "", "location": "Downtown Indianapolis (46204)", "miles": 1.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-11-30"], "price": null, "class_hours": "", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-19"}, {"id": "hospitality-indiana", "name": "Hospitality Indiana", "type": "center", "outside": true, "phone": "(317) 673-4211", "booking_url": "https://www.hospitalityindiana.org/events/servsafe-classes", "location": "Ivy Tech Culinary Center, 2820 N Meridian St", "miles": 3.0, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 165.0, "class_hours": "7.5", "includes_exam": true, "includes_book": true, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "indy-food-safety", "name": "Indy Food Safety Consulting", "type": "center", "outside": true, "phone": "", "booking_url": "https://indyfoodsafety.com/", "location": "5945 E 86th St, Indianapolis 46250", "miles": 12.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-12-05", "2027-01-02", "2027-02-06"], "price": 200.0, "class_hours": "3", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}];
+const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-classes-indiana/';
 /* Food Safety Classes Near Me — city page logic (inlined into each city page) */
 (function () {
   const A = { mode: null, when: null, pref: null };
@@ -141,7 +142,7 @@ const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Ma
   $$('#funnel .q').forEach(q => {
     $$('.opt', q).forEach(b => b.addEventListener('click', () => {
       A[q.dataset.q] = b.dataset.v;
-      if (q.dataset.q === 'mode' && b.dataset.v === 'online') return view('online');
+      if (q.dataset.q === 'mode' && b.dataset.v === 'online') { location.href = ONLINE_URL; return; }
       const next = ORDER[ORDER.indexOf(q.dataset.q) + 1];
       next ? show(next) : view('results');
     }));
