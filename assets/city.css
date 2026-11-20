@@ -62,10 +62,11 @@
 .other h2{font-size:26px}
 @media (max-width:700px){.fine-card{padding:20px 22px}}
 .fap-h{font-family:Inter,sans-serif;font-size:17px;font-weight:600;margin:0}
-.fap{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;font-size:14px;line-height:1.4;color:#3A444B;max-height:420px;overflow-y:auto}
+.fap{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 24px;font-size:14px;line-height:1.4;color:#3A444B}
 .fap li{display:flex;flex-direction:column;gap:2px;padding-bottom:10px;border-bottom:1px solid #EEF1F3}
 .fap strong{color:#1C2226;font-weight:600}
 .fap span{color:#5B6770;font-size:13px}
 .fap .ok{display:inline;margin-left:6px;color:#155C39;font-size:12px;font-weight:600}
 @media (max-width:900px){.fap{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.fap{grid-template-columns:1fr}}
+.fap a{text-decoration:none}.fap a:hover strong{color:#1F7A4D;text-decoration:underline}
