@@ -61,7 +61,7 @@
     <p class="q__t">Where would you like the class?</p>
     <div class="opts">
       <button class="opt" data-v="center"><strong>A training center classroom</strong><span>Scheduled classes at a set location.</span></button>
-      <button class="opt" data-v="instructor"><strong>An instructor who comes to me</strong><span>At my business, or a spot that works for me.</span></button>
+      <button class="opt" data-v="instructor"><strong>A location near me or my business</strong><span>An instructor meets me nearby, or comes to my workplace.</span></button>
       <button class="opt" data-v="any"><strong>No preference</strong><span>Show me the best options.</span></button>
     </div>
     <button class="back" data-back>Back</button>
@@ -113,7 +113,7 @@
 </div>
 
 <script>
-const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Made Easy)", "type": "instructor", "outside": false, "phone": "(765) 706-4304", "booking_url": "https://foodsafetymadeeasy.com/indiana-booking_landing/", "location": "Comes to you, or Noblesville", "miles": 22.0, "comes_to_you": true, "appointment_days": "2", "next_classes": ["2026-11-23", "2026-11-24", "2026-11-30", "2026-12-02", "2026-12-04"], "price": 119.0, "class_hours": "4", "includes_exam": true, "includes_book": false, "results": "Same day", "languages": ["English"], "years": "20", "last_checked": "2026-11-19"}, {"id": "FSME-IN-00144", "name": "Jose Sanchez T (Doc Bits restaurante)", "type": "instructor", "outside": false, "phone": "(317) 912-8343", "booking_url": "", "location": "Downtown Indianapolis (46204)", "miles": 1.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-11-30"], "price": null, "class_hours": "", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-19"}, {"id": "hospitality-indiana", "name": "Hospitality Indiana", "type": "center", "outside": true, "phone": "(317) 673-4211", "booking_url": "https://www.hospitalityindiana.org/events/servsafe-classes", "location": "Ivy Tech Culinary Center, 2820 N Meridian St", "miles": 3.0, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 165.0, "class_hours": "7.5", "includes_exam": true, "includes_book": true, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "indy-food-safety", "name": "Indy Food Safety Consulting", "type": "center", "outside": true, "phone": "", "booking_url": "https://indyfoodsafety.com/", "location": "5945 E 86th St, Indianapolis 46250", "miles": 12.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-12-05", "2027-01-02", "2027-02-06"], "price": 200.0, "class_hours": "3", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}];
+const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Made Easy)", "type": "instructor", "outside": false, "phone": "(765) 706-4304", "booking_url": "https://foodsafetymadeeasy.com/indiana-booking_landing/", "location": "A location near you or your business", "miles": 22.0, "comes_to_you": true, "appointment_days": "2", "next_classes": ["2026-11-23", "2026-11-24", "2026-11-30", "2026-12-02", "2026-12-04"], "price": 119.0, "class_hours": "4", "includes_exam": true, "includes_book": false, "results": "Same day", "languages": ["English"], "years": "20", "last_checked": "2026-11-19"}, {"id": "FSME-IN-00144", "name": "Jose Sanchez T (Doc Bits restaurante)", "type": "instructor", "outside": false, "phone": "(317) 912-8343", "booking_url": "", "location": "Downtown Indianapolis (46204)", "miles": 1.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-11-30"], "price": null, "class_hours": "", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-19"}, {"id": "hospitality-indiana", "name": "Hospitality Indiana", "type": "center", "outside": true, "phone": "(317) 673-4211", "booking_url": "https://www.hospitalityindiana.org/events/servsafe-classes", "location": "Ivy Tech Culinary Center, 2820 N Meridian St", "miles": 3.0, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 165.0, "class_hours": "7.5", "includes_exam": true, "includes_book": true, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "indy-food-safety", "name": "Indy Food Safety Consulting", "type": "center", "outside": true, "phone": "", "booking_url": "https://indyfoodsafety.com/", "location": "5945 E 86th St, Indianapolis 46250", "miles": 12.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-12-05", "2027-01-02", "2027-02-06"], "price": 200.0, "class_hours": "3", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}];
 const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-at-home/';
 /* Food Safety Classes Near Me — city page logic (inlined into each city page) */
 (function () {
@@ -125,7 +125,7 @@ const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-at-home/';
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const WINDOW = { asap: 7, week: 14, later: 30 };
   const WHEN_TXT = { asap: 'as soon as possible', week: 'within 2 weeks', later: 'in 2 weeks or more' };
-  const PREF_TXT = { center: 'a training center classroom', instructor: 'an instructor who comes to you', any: 'no preference on where' };
+  const PREF_TXT = { center: 'a training center classroom', instructor: 'a location near you or your business', any: 'no preference on where' };
 
   const parse = d => { const [y, m, dd] = d.split('-').map(Number); return new Date(y, m - 1, dd); };
   const fmt = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
@@ -176,13 +176,13 @@ const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-at-home/';
 
   /* attributes: value (lower is better), label when best, label when tied, fallback label by rank */
   const ATTR = {
-    soonest: { v: f => f.soonest, best: f => f.appt !== null && f.appt === f.soonest ? 'Can come to you in ' + f.appt + ' day' + (f.appt === 1 ? '' : 's') : 'Soonest class: ' + fmt(f.dates[0]), tie: 'Tied for soonest class', rank: (f, r) => f.dates.length ? 'Next class ' + fmt(f.dates[0]) : null },
+    soonest: { v: f => f.soonest, best: f => f.appt !== null && f.appt === f.soonest ? 'Near you or your business in ' + f.appt + ' day' + (f.appt === 1 ? '' : 's') : 'Soonest class: ' + fmt(f.dates[0]), tie: 'Tied for soonest class', rank: (f, r) => f.dates.length ? 'Next class ' + fmt(f.dates[0]) : null },
     count:   { v: f => -f.count, best: f => f.count >= 99 ? 'Schedules around you' : 'Most classes before your deadline', tie: 'Tied for most classes in your window', rank: () => null },
     miles:   { v: f => f.miles, best: () => 'Closest to downtown', tie: 'Tied for closest', rank: (f, r) => ordinal(r) + ' closest' },
     price:   { v: f => f.price, best: () => 'Lowest price', tie: 'Tied for lowest price', rank: (f, r) => ordinal(r) + ' lowest price' },
     years:   { v: f => f.years ? -f.years : Infinity, best: f => 'Most experience: ' + f.years + ' years', tie: 'Tied for most experience', rank: (f, r) => f.years + ' years teaching' },
     sameDay: { v: f => f.sameDay ? 0 : 1, best: () => 'Same-day results', tie: 'Same-day results', rank: () => null },
-    comes:   { v: f => f.p.comes_to_you ? 0 : 1, best: () => 'Comes to your business', tie: 'Comes to your business', rank: () => null },
+    comes:   { v: f => f.p.comes_to_you ? 0 : 1, best: () => 'Location near you or your business', tie: 'Location near you or your business', rank: () => null },
     hours:   { v: f => Number(f.p.class_hours) || Infinity, best: f => 'Shortest class: ' + f.p.class_hours + ' hours', tie: 'Tied for shortest class', rank: () => null },
     room:    { v: f => f.p.type === 'center' ? 0 : 1, best: () => 'Scheduled classroom classes', tie: 'Scheduled classroom classes', rank: () => null }
   };
@@ -243,14 +243,14 @@ const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-at-home/';
     const rows = [
       ['Next class', f => {
         const bits = [];
-        if (f.appt !== null) bits.push(yes('Comes to you in ' + f.appt + ' day' + (f.appt === 1 ? '' : 's')));
+        if (f.appt !== null) bits.push(yes('Near you or your business in ' + f.appt + ' day' + (f.appt === 1 ? '' : 's')));
         if (f.dates.length) bits.push(fmt(f.dates[0]));
         return bits.join('<br>') || no('No dates posted');
       }],
       ['Classes before your deadline', f => f.appt !== null && f.appt <= WINDOW[A.when] ? yes('By appointment') + (f.inWin.length ? '<br>+ ' + f.inWin.length + ' scheduled' : '') : f.inWin.length ? String(f.inWin.length) : no('None')],
       ['Location', f => f.p.location ? esc(f.p.location) : '<span class="no">Ask</span>'],
       ['Distance', f => Number.isFinite(f.miles) ? f.miles + ' mi' : '<span class="no">Ask</span>'],
-      ['Comes to you', f => f.p.comes_to_you ? yes('Yes') : no('No')],
+      ['Location near you or your business', f => f.p.comes_to_you ? yes('Yes') : no('No')],
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
       ['Class length', f => f.p.class_hours ? f.p.class_hours + ' hours' : '<span class="no">Ask</span>'],
       ['Exam included', f => f.p.includes_exam == null ? no('Ask') : f.p.includes_exam ? yes('Yes') : no('No')],
