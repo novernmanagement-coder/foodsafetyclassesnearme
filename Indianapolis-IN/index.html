@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=1">
-<link rel="stylesheet" href="/assets/city.css?v=8">
+<link rel="stylesheet" href="/assets/city.css?v=9">
 </head>
 <body>
 <div class="page page--photo" style="background-image:linear-gradient(rgba(20,24,27,.35),rgba(20,24,27,.35)),url('https://foodsafetymadeeasy.com/wp-content/uploads/2026/11/pexels-nick-souza-225420956-12193823-2.jpg')">
@@ -264,6 +264,10 @@ const CITY_KEY = 'Indianapolis-IN';
         const bits = [];
         if (f.appt !== null) bits.push(yes('Near you or your business in ' + f.appt + ' day' + (f.appt === 1 ? '' : 's')));
         if (f.dates.length) bits.push(fmt(f.dates[0]));
+        if (!f.dates.length) {   // no posted dates: send them where they can find one
+          if (f.p.booking_url) bits.push('<a class="btn btn--line btn--xs" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">See website</a>');
+          else if (f.p.phone) bits.push('<a class="btn btn--line btn--xs" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a>');
+        }
         return bits.join('<br>') || no('No dates posted');
       }],
       ['Classes before your deadline', f => f.appt !== null && f.appt <= WINDOW[A.when] ? yes('By appointment') + (f.inWin.length ? '<br>+ ' + f.inWin.length + ' scheduled' : '') : f.inWin.length ? String(f.inWin.length) : no('None')],
