@@ -35,8 +35,8 @@
 .why{display:inline-block;margin-top:10px;background:#1F7A4D;color:#fff;border-radius:999px;padding:4px 10px;font-size:13px;font-weight:600;line-height:1.35}
 .cmp .no{color:#9AA5AC}
 .cmp .yes{color:#155C39;font-weight:600}
-.actions{display:flex;flex-direction:column;gap:8px}
-.actions .btn{min-height:40px;padding:0 12px;font-size:14px;width:100%}
+.actions{display:flex;flex-direction:row;flex-wrap:wrap;gap:8px}
+.actions .btn{min-height:40px;padding:0 10px;font-size:14px;flex:1 1 0;min-width:0;white-space:nowrap}
 .btn--line{border:1.5px solid #1F7A4D;color:#155C39;background:#fff}.btn--line:hover{background:#F1F8F4;color:#155C39}
 .checked{font-size:12px;color:#8A969E;margin-top:6px}
 .res-foot{display:flex;flex-wrap:wrap;gap:6px 24px;justify-content:space-between;font-size:12px;line-height:1.5;color:#8A969E}
@@ -57,7 +57,7 @@
   .cmp .rowh{width:110px}
   .more ul{grid-template-columns:1fr}
 }
-.phone{font-size:13px;color:#5B6770;text-align:center}
+.phone{font-size:13px;color:#5B6770;text-align:center;flex-basis:100%}
 .fineprint{font-size:11px;line-height:1.5;color:#9AA5AC}
 .fine-card{padding:24px 56px;gap:8px}
 .other{gap:16px}
@@ -78,3 +78,23 @@
 .start-here svg{animation:sh-bob 1s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
 @keyframes sh-bob{0%,100%{transform:translateY(-4px)}50%{transform:translateY(4px)}}
 @media (prefers-reduced-motion:reduce){.start-here svg{animation:none}}
+/* class calendar (results) */
+.cal{display:flex;flex-direction:column;gap:14px;border-top:1px solid #E3E7EA;padding-top:22px}
+.cal__head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.cal__head h3{font-family:"Space Grotesk",Inter,sans-serif;font-size:22px;margin:0}
+.cal__grid{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px}
+.cal__wd{font-size:12px;font-weight:600;color:#8A969E;text-align:center;text-transform:uppercase;letter-spacing:.04em}
+.cal__d{min-height:58px;border:1px solid #E3E7EA;border-radius:10px;padding:6px 8px;display:flex;flex-direction:column;gap:2px;font:inherit;font-size:14px;color:#8A969E;background:#fff;text-align:left}
+.cal__d--on{border-color:#1F7A4D;background:#F1F8F4;color:#1C2226;cursor:pointer}
+.cal__d--on:hover{background:#E3F2EA}
+.cal__d--sel{background:#1F7A4D;color:#fff}.cal__d--sel:hover{background:#1F7A4D}
+.cal__d b{font-size:12px;font-weight:600;color:#155C39}.cal__d--sel b{color:#fff}
+.cal__lt{font-weight:700;font-size:16px;margin:0 0 4px}
+.cal__list,.cal__appt{display:flex;flex-direction:column;gap:8px}
+.cal__row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid #E3E7EA;border-radius:10px;padding:10px 14px}
+.cal__row strong{display:block;font-size:15px}
+.cal__row span{font-size:13px;color:#5B6770}
+.cal__btns{display:flex;gap:8px}
+.cal__btns .btn{min-height:38px;padding:0 16px;font-size:14px}
+.cal__none{font-size:15px;color:#5B6770;margin:0}
+@media (max-width:600px){.cal__d{min-height:48px;padding:4px 5px;font-size:13px}.cal__d b{font-size:10px}.cal__row{flex-direction:column;align-items:flex-start}}
