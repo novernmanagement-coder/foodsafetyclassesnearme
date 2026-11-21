@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=1">
-<link rel="stylesheet" href="/assets/city.css?v=5">
+<link rel="stylesheet" href="/assets/city.css?v=7">
 </head>
 <body>
 <div class="page page--photo" style="background-image:linear-gradient(rgba(20,24,27,.35),rgba(20,24,27,.35)),url('https://foodsafetymadeeasy.com/wp-content/uploads/2026/11/pexels-nick-souza-225420956-12193823-2.jpg')">
@@ -91,6 +91,7 @@
     <button class="linkbtn" data-restart>Change my answers</button>
   </div>
   <div class="cmp-scroll"><table class="cmp" id="cmp"></table></div>
+  <div class="cal" id="cal"></div>
 </section>
 
 <!-- OTHER OPTIONS -->
@@ -274,7 +275,7 @@ const CITY_KEY = 'Indianapolis-IN';
       ['Results', f => f.sameDay ? yes(esc(f.p.results)) : f.p.results ? esc(f.p.results) : '<span class="no">Ask</span>'],
       ['Languages', f => esc(f.p.languages.join(', '))],
       ['', f => '<div class="actions">' +
-          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">See schedule</a>' : '') +
+          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">Book class</a>' : '') +
           (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
@@ -286,6 +287,56 @@ const CITY_KEY = 'Indianapolis-IN';
       h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td' + (i === 0 ? ' class="top"' : '') + '>' + fn(f) + '</td>').join('') + '</tr>';
     });
     $('#cmp').innerHTML = h + '</tbody>';
+    calDays = WINDOW[A.when]; calList = list; calSel = null;
+    renderCal();
+  }
+
+  /* ---------- calendar: sized to the student's deadline (7 / 14 / 30 days) ---------- */
+  let calDays = 7, calList = [], calSel = null;
+  const key = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+  const STEPS = [7, 14, 30];
+  function renderCal() {
+    const byDay = {};
+    calList.forEach(f => f.dates.forEach(d => { const k = key(d); (byDay[k] = byDay[k] || []).push(f); }));
+    const days = [];
+    for (let i = 0; i < calDays; i++) { const d = new Date(today.getTime() + i * DAY); days.push(d); }
+    const has = days.filter(d => byDay[key(d)]);
+    if (calSel === null || !byDay[calSel]) calSel = has.length ? key(has[0]) : null;
+    const lead = days[0].getDay();
+    let g = '<div class="cal__grid">' + ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(w => '<div class="cal__wd">' + w + '</div>').join('');
+    for (let i = 0; i < lead; i++) g += '<div class="cal__pad"></div>';
+    days.forEach(d => {
+      const k = key(d), n = (byDay[k] || []).length;
+      const mon = d.getDate() === 1 || d === days[0] ? d.toLocaleDateString('en-US', { month: 'short' }) + ' ' : '';
+      g += n
+        ? '<button class="cal__d cal__d--on' + (k === calSel ? ' cal__d--sel' : '') + '" data-day="' + k + '"><span>' + mon + d.getDate() + '</span><b>' + n + (n === 1 ? ' class' : ' classes') + '</b></button>'
+        : '<div class="cal__d"><span>' + mon + d.getDate() + '</span></div>';
+    });
+    g += '</div>';
+    let detail = '';
+    if (calSel) {
+      detail = '<div class="cal__list"><p class="cal__lt">' + fmt(new Date(calSel.replace(/-/g, '/'))) + '</p>' + byDay[calSel].map(f =>
+        '<div class="cal__row"><div><strong>' + esc(f.p.name) + '</strong><span>' +
+        [Number.isFinite(f.price) ? money(f.price) : '', f.p.class_hours ? f.p.class_hours + ' hrs' : '', f.p.comes_to_you ? 'A location near you' : (f.p.location || '')].filter(Boolean).map(esc).join(' &middot; ') +
+        '</span></div><div class="cal__btns">' +
+        (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">Book</a>' : '') +
+        (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a>' : '') +
+        '</div></div>').join('') + '</div>';
+    } else {
+      detail = '<p class="cal__none">No scheduled classes in these ' + calDays + ' days. Call any provider below, or show later dates.</p>';
+    }
+    const appt = calList.filter(f => f.appt !== null || !f.dates.length).filter(f => f.p.phone);
+    const apptHtml = appt.length ? '<div class="cal__appt"><p class="cal__lt">Also available: call to schedule</p>' + appt.map(f =>
+      '<div class="cal__row"><div><strong>' + esc(f.p.name) + '</strong><span>' +
+      (f.appt !== null ? 'By appointment, within ' + f.appt + ' day' + (f.appt === 1 ? '' : 's') : 'No dates posted') +
+      (Number.isFinite(f.price) ? ' &middot; ' + money(f.price) : '') +
+      '</span></div><div class="cal__btns"><a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a></div></div>').join('') + '</div>' : '';
+    const next = STEPS.find(s => s > calDays);
+    $('#cal').innerHTML = '<div class="cal__head"><h3>Class calendar: next ' + calDays + ' days</h3>' +
+      (next ? '<button class="linkbtn" data-later>Show later dates</button>' : '') + '</div>' + g + detail + apptHtml;
+    $$('[data-day]', $('#cal')).forEach(b => b.addEventListener('click', () => { calSel = b.dataset.day; renderCal(); }));
+    const later = $('[data-later]', $('#cal'));
+    if (later) later.addEventListener('click', () => { calDays = next; renderCal(); });
   }
 
   // shortcut link: ?answers=person,asap,any jumps straight to results
