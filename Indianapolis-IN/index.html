@@ -266,9 +266,7 @@ const CITY_KEY = 'Indianapolis-IN';
         return bits.join('<br>') || no('No dates posted');
       }],
       ['Classes before your deadline', f => f.appt !== null && f.appt <= WINDOW[A.when] ? yes('By appointment') + (f.inWin.length ? '<br>+ ' + f.inWin.length + ' scheduled' : '') : f.inWin.length ? String(f.inWin.length) : no('None')],
-      ['Location', f => f.p.location ? esc(f.p.location) : '<span class="no">Ask</span>'],
-      ['Distance', f => f.p.comes_to_you ? yes('Travels to you') : Number.isFinite(f.miles) ? f.miles + ' mi' : '<span class="no">Ask</span>'],
-      ['Location near you or your business', f => f.p.comes_to_you ? yes('Yes') : no('No')],
+      ['Where', f => f.p.comes_to_you ? yes('Comes to you') : (f.p.location ? esc(f.p.location) : '') + (Number.isFinite(f.miles) ? (f.p.location ? ' &middot; ' : '') + f.miles + ' mi' : '') || no('Ask')],
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
       ['Class length', f => f.p.class_hours ? f.p.class_hours + ' hours' : '<span class="no">Ask</span>'],
       ['Exam included', f => f.p.includes_exam == null ? no('Ask') : f.p.includes_exam ? yes('Yes') : no('No')],
