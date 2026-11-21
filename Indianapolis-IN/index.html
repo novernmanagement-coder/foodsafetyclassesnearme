@@ -270,7 +270,7 @@ const CITY_KEY = 'Indianapolis-IN';
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
       ['Class length', f => f.p.class_hours ? f.p.class_hours + ' hours' : '<span class="no">Ask</span>'],
       ['Exam included', f => f.p.includes_exam == null ? no('Ask') : f.p.includes_exam ? yes('Yes') : no('No')],
-      ['Book or study options', f => f.p.includes_book == null ? no('Ask') : typeof f.p.includes_book === 'string' ? yes(f.p.includes_book.split(';').map(s => esc(s.trim())).join('<br>')) : f.p.includes_book ? yes('Yes') : no('No')],
+      ['Pre-class study options', f => f.p.includes_book == null ? no('Ask') : typeof f.p.includes_book === 'string' ? yes(f.p.includes_book.split(';').map(s => esc(s.trim())).join('<br>')) : f.p.includes_book ? yes('Yes') : no('No')],
       ['Results', f => f.sameDay ? yes(esc(f.p.results)) : f.p.results ? esc(f.p.results) : '<span class="no">Ask</span>'],
       ['Languages', f => esc(f.p.languages.join(', '))],
       ['', f => '<div class="actions">' +
