@@ -89,3 +89,4 @@
 .mc__d--class{color:#155C39;font-weight:700;background:#E3F2EA}
 .mc__d--class::after{content:"";position:absolute;left:50%;bottom:1px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#D7261E}
 .mc__note{font-size:12px;color:#8A969E;margin-top:4px}
+.btn--xs{min-height:30px;padding:0 12px;font-size:13px;margin-top:2px}
