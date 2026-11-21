@@ -72,3 +72,8 @@
 @media (max-width:900px){.fap{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:600px){.fap{grid-template-columns:1fr}}
 .fap a{text-decoration:none}.fap a:hover strong{color:#1F7A4D;text-decoration:underline}
+/* "Start here" arrow above the first answer */
+.start-here{display:flex;align-items:center;gap:10px;margin:-2px 0 -6px 18px;color:#D7261E;font-weight:800;font-size:17px;letter-spacing:.02em;text-transform:uppercase}
+.start-here svg{animation:sh-bob 1s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
+@keyframes sh-bob{0%,100%{transform:translateY(-4px)}50%{transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){.start-here svg{animation:none}}
