@@ -90,3 +90,30 @@
 .mc__d--class::after{content:"";position:absolute;left:50%;bottom:1px;width:5px;height:5px;margin-left:-2.5px;border-radius:50%;background:#D7261E}
 .mc__note{font-size:12px;color:#8A969E;margin-top:4px}
 .btn--xs{min-height:30px;padding:0 12px;font-size:13px;margin-top:2px}
+.mc--none{display:flex;flex-direction:column;align-items:flex-start;gap:8px}.mc--none p{margin:0;font-size:14px;color:#8A969E}
+/* Class details button + popup */
+.pdet{display:flex;margin-top:10px}
+.dlg{border:0;border-radius:16px;padding:0;width:min(520px,calc(100vw - 32px));max-height:calc(100vh - 48px);box-shadow:0 20px 60px rgba(0,0,0,.35)}
+.dlg::backdrop{background:rgba(20,24,27,.55)}
+.dlg__in{position:relative;padding:28px 28px 24px;overflow:auto}
+.dlg__x{position:absolute;top:10px;right:12px;border:0;background:none;font-size:28px;line-height:1;color:#5B6770;cursor:pointer;padding:4px 8px}
+.dlg h3{font-family:"Space Grotesk",Inter,sans-serif;font-size:24px;margin:2px 40px 8px 0}
+.dlg h4{font-size:13px;text-transform:uppercase;letter-spacing:.05em;color:#5B6770;margin:16px 0 6px}
+.dlg ul{margin:0;padding-left:20px;font-size:15px;line-height:1.6;color:#1C2226}
+.dlg__opts{list-style:none;padding:0}
+.dlg__opts li{padding-left:24px;position:relative;color:#155C39;font-weight:600}
+.dlg__opts li::before{content:"\2713";position:absolute;left:0;color:#1F7A4D}
+.dlg__btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.dlg__btns .btn{min-height:42px;padding:0 18px;font-size:15px}
+/* SEO marquee: cities + counties served */
+.mq{background:rgba(255,255,255,.94);border-radius:16px;padding:18px 0 16px;overflow:hidden}
+.mq__t{text-align:center;font-size:13px;font-weight:700;color:#1C2226;letter-spacing:.03em;margin:0 0 10px}
+.mq__wrap{overflow:hidden;-webkit-mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 40px),transparent);mask-image:linear-gradient(to right,transparent,#000 40px,#000 calc(100% - 40px),transparent)}
+.mq__track{display:flex;width:max-content;animation:mq-scroll 70s linear infinite}
+.mq__wrap:hover .mq__track{animation-play-state:paused}
+.mq__seq{display:flex;align-items:center;gap:14px;padding-right:14px;white-space:nowrap}
+.mq__i{font-size:13px;color:#8A969E}.mq__i--city{font-weight:600;color:#1C2226}
+.mq__d{color:#C3CAD0}
+@keyframes mq-scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.mq__track{animation:none}.mq__wrap{overflow-x:auto}}
+.areas{display:flex;flex-wrap:wrap;gap:8px}.area{display:inline-block;padding:7px 14px;border:1px solid #DDE2E6;border-radius:999px;font-size:14px;color:#1C2226;text-decoration:none;background:#fff}.area:hover{border-color:#1F7A4D;color:#155C39;background:#F1F8F4}
