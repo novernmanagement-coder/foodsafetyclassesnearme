@@ -12,7 +12,7 @@
 .progress span{height:6px;flex:1;border-radius:3px;background:#DDE2E6}
 .progress span.on{background:#1F7A4D}
 .q{display:flex;flex-direction:column;gap:14px}
-.q__t{font-family:"Space Grotesk",Inter,sans-serif;font-size:26px;font-weight:700;line-height:1.25}
+.q__t{font-family:"Space Grotesk",Inter,sans-serif;font-size:22px;font-weight:700;line-height:1.25}
 .opts{display:grid;gap:12px}
 .opt{display:flex;flex-direction:column;gap:4px;text-align:left;width:100%;border:1.5px solid #DDE2E6;background:#fff;border-radius:12px;padding:16px 18px;font:inherit;cursor:pointer;color:#1C2226}
 .opt:hover,.opt:focus-visible{border-color:#1F7A4D;background:#F1F8F4;outline:none}
@@ -52,7 +52,7 @@
 
 @media (max-width:700px){
   .funnel h1{font-size:30px}
-  .q__t{font-size:22px}
+  .q__t{font-size:19px}
   .res-head h2{font-size:24px}
   .cmp .rowh{width:110px}
   .more ul{grid-template-columns:1fr}
@@ -73,8 +73,8 @@
 @media (max-width:600px){.fap{grid-template-columns:1fr}}
 .fap a{text-decoration:none}.fap a:hover strong{color:#1F7A4D;text-decoration:underline}
 /* "Start here" arrow above the first answer */
-.start-here{display:flex;margin:-4px 0 -6px 40px}
-.start-here__t{color:#D7261E;font-family:Inter,sans-serif;font-weight:800;font-size:17px;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;margin-left:8px;vertical-align:middle}
+.start-here{display:inline-block;vertical-align:middle;margin-left:4px}
+.start-here__t{color:#D7261E;font-family:Inter,sans-serif;font-weight:800;font-size:14px;letter-spacing:.02em;text-transform:uppercase;white-space:nowrap;margin-left:8px;vertical-align:middle}
 .start-here svg{animation:sh-bob 1s ease-in-out infinite;filter:drop-shadow(0 2px 2px rgba(0,0,0,.18))}
 @keyframes sh-bob{0%,100%{transform:translateY(-4px)}50%{transform:translateY(4px)}}
 @media (prefers-reduced-motion:reduce){.start-here svg{animation:none}}
