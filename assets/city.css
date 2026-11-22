@@ -154,3 +154,6 @@
 .cmp .pc0{box-shadow:inset 0 0 0 0 transparent}
 .pcard{border-color:transparent}
 .pcard--top{border-color:#BFE0CC}
+.cmp .detrow td{border-top:0;padding-top:0;padding-bottom:16px}
+.cmp .detrow th{border-top:0}
+.cmp .detrow .pdet{width:100%}
