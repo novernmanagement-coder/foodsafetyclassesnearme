@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=1">
-<link rel="stylesheet" href="/assets/city.css?v=15">
+<link rel="stylesheet" href="/assets/city.css?v=16">
 </head>
 <body>
 <div class="page page--photo" style="background-image:linear-gradient(rgba(20,24,27,.35),rgba(20,24,27,.35)),url('https://foodsafetymadeeasy.com/wp-content/uploads/2026/11/pexels-nick-souza-225420956-12193823-2.jpg')">
@@ -291,16 +291,16 @@ const CITY_KEY = 'Indianapolis-IN';
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
     let h = '<thead><tr><th class="rowh"></th>' + list.map((f, i) =>
-      '<th' + (i === 0 ? ' class="top"' : '') + '><div class="pname">' + esc(f.p.name) + '</div><div class="ptype">' +
+      '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="pname">' + esc(f.p.name) + '</div><div class="ptype">' +
       (f.p.type === 'center' ? 'Training center' : 'Local instructor') + '</div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '<button class="btn btn--line btn--xs pdet" data-det="' + esc(f.p.id) + '">Class details</button></th>').join('') + '</tr></thead><tbody>';
     rows.forEach(([label, fn]) => {
-      h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td' + (i === 0 ? ' class="top"' : '') + '>' + fn(f) + '</td>').join('') + '</tr>';
+      h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td class="pc' + i + (i === 0 ? ' top' : '') + '">' + fn(f) + '</td>').join('') + '</tr>';
     });
     $('#cmp').innerHTML = h + '</tbody>';
     // Phones (11/21/2026): the same providers as stacked cards, one per row, instead of narrow columns
     $('#pcards').innerHTML = list.map((f, i) =>
-      '<article class="pcard' + (i === 0 ? ' pcard--top' : '') + '">' +
+      '<article class="pcard pc' + i + (i === 0 ? ' pcard--top' : '') + '">' +
       '<div class="pcard__head"><div><div class="pname">' + esc(f.p.name) + '</div><div class="ptype">' +
       (f.p.type === 'center' ? 'Training center' : 'Local instructor') + '</div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</div>' +
