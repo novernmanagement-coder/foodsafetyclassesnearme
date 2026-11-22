@@ -157,3 +157,7 @@
 .cmp .detrow td{border-top:0;padding-top:0;padding-bottom:16px}
 .cmp .detrow th{border-top:0}
 .cmp .detrow .pdet{width:100%}
+/* no sideways scrollbar on desktop: the spaced panels fit the card */
+.cmp{margin:0;width:100%;border-spacing:10px 0}
+.cmp-scroll{margin:0 -10px;padding:0}
+@media (min-width:701px){.cmp-scroll{overflow-x:visible}.cmp{min-width:0}}
