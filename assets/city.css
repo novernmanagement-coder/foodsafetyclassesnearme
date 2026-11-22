@@ -118,3 +118,22 @@
 @media (prefers-reduced-motion:reduce){.mq__track{animation:none}.mq__wrap{overflow-x:auto}}
 .areas{display:flex;flex-wrap:wrap;gap:8px}.area{display:inline-block;padding:7px 14px;border:1px solid #DDE2E6;border-radius:999px;font-size:14px;color:#1C2226;text-decoration:none;background:#fff}.area:hover{border-color:#1F7A4D;color:#155C39;background:#F1F8F4}
 .ptest{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;background:#F1F8F4;border:1px solid #CFE6D9;border-radius:12px;padding:16px 20px}.ptest strong{display:block;font-size:16px;color:#1C2226}.ptest span{font-size:14px;color:#5B6770}.ptest .btn{min-height:44px;padding:0 20px;font-size:15px;white-space:nowrap}
+
+/* 11/21/2026: trimmed comparison (calendar, next class, price) + stacked cards on phones */
+.cmp{min-width:640px}
+.pcards{display:none;flex-direction:column;gap:12px}
+.pcard{border:1px solid #E3E7EA;border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;background:#fff}
+.pcard--top{background:#F1F8F4;border-color:#CDE6D8}
+.pcard__head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.pcard__price{font-size:22px;font-weight:700;color:#1C2226;white-space:nowrap}
+.pcard__price .no{font-size:15px;font-weight:500;color:#9AA5AC}
+.pcard__when{font-size:15px;color:#1C2226}
+.pcard__when .no{color:#9AA5AC}
+.pcard__lbl{font-size:12px;font-weight:700;color:#5B6770;text-transform:uppercase;letter-spacing:.04em;margin-right:4px}
+.pcard .mc{max-width:none}
+.pcard__foot{display:flex;flex-direction:column;gap:8px}
+.pcard__foot .pdet{align-self:flex-start}
+@media (max-width:700px){
+  .cmp-scroll{display:none}
+  .pcards{display:flex}
+}

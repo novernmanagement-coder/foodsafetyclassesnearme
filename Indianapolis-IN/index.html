@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=1">
-<link rel="stylesheet" href="/assets/city.css?v=14">
+<link rel="stylesheet" href="/assets/city.css?v=15">
 </head>
 <body>
 <div class="page page--photo" style="background-image:linear-gradient(rgba(20,24,27,.35),rgba(20,24,27,.35)),url('https://foodsafetymadeeasy.com/wp-content/uploads/2026/11/pexels-nick-souza-225420956-12193823-2.jpg')">
@@ -91,6 +91,7 @@
     <button class="linkbtn" data-restart>Change my answers</button>
   </div>
   <div class="cmp-scroll"><table class="cmp" id="cmp"></table></div>
+  <div class="pcards" id="pcards"></div>
   <div class="ptest">
     <div><strong>Booked a class? Get a head start.</strong><span>Free 20-question ServSafe practice test with answer key. See where you stand before class.</span></div>
     <a class="btn btn--green" href="https://foodsafetymadeeasy.com/wp-content/uploads/2026/11/Free-ServSafe-Practice-Test.pdf" target="_blank" rel="noopener">Free practice test</a>
@@ -283,14 +284,7 @@ const CITY_KEY = 'Indianapolis-IN';
         if (f.dates.length) bits.push(fmt(f.dates[0]));
         return bits.join('<br>') || no('Ask');
       }],
-      ['Classes before your deadline', f => f.inWin.length ? f.inWin.length + (f.inWin.length === 1 ? ' class' : ' classes') : f.appt !== null && f.appt <= WINDOW[A.when] ? yes('By appointment') : no('None')],
-      ['Where', f => f.p.comes_to_you ? yes('A location near you') : (f.p.location ? esc(f.p.location) : no('Ask'))],
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
-      ['Class length', f => f.p.class_hours ? f.p.class_hours + ' hours' : '<span class="no">Ask</span>'],
-      ['Exam included', f => f.p.includes_exam == null ? no('Ask') : f.p.includes_exam ? yes('Yes') : no('No')],
-      ['Pre-class study options', f => f.p.includes_book == null ? no('Ask') : typeof f.p.includes_book === 'string' ? yes(f.p.includes_book.split(';').map(s => esc(s.trim())).join('<br>')) : f.p.includes_book ? yes('Yes') : no('No')],
-      ['Results', f => f.sameDay ? yes(esc(f.p.results)) : f.p.results ? esc(f.p.results) : '<span class="no">Ask</span>'],
-      ['Languages', f => esc(f.p.languages.join(', '))],
       ['', f => '<div class="actions">' +
           (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">Book class</a>' : '') +
           (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
@@ -304,7 +298,19 @@ const CITY_KEY = 'Indianapolis-IN';
       h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td' + (i === 0 ? ' class="top"' : '') + '>' + fn(f) + '</td>').join('') + '</tr>';
     });
     $('#cmp').innerHTML = h + '</tbody>';
-    $$('[data-det]', $('#cmp')).forEach(b => b.addEventListener('click', () => details(list.find(f => f.p.id === b.dataset.det))));
+    // Phones (11/21/2026): the same providers as stacked cards, one per row, instead of narrow columns
+    $('#pcards').innerHTML = list.map((f, i) =>
+      '<article class="pcard' + (i === 0 ? ' pcard--top' : '') + '">' +
+      '<div class="pcard__head"><div><div class="pname">' + esc(f.p.name) + '</div><div class="ptype">' +
+      (f.p.type === 'center' ? 'Training center' : 'Local instructor') + '</div>' +
+      (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</div>' +
+      '<div class="pcard__price">' + rows[2][1](f) + '</div></div>' +
+      '<div class="pcard__when"><span class="pcard__lbl">Next class</span> ' + rows[1][1](f) + '</div>' +
+      rows[0][1](f) +
+      '<div class="pcard__foot">' + rows[3][1](f) +
+      '<button class="btn btn--line btn--xs pdet" data-det="' + esc(f.p.id) + '">Class details</button></div>' +
+      '</article>').join('');
+    $$('[data-det]', $('#results')).forEach(b => b.addEventListener('click', () => details(list.find(f => f.p.id === b.dataset.det))));
   }
 
   /* ---------- Class details popup ---------- */
