@@ -177,7 +177,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   // 11/23/2026: the business is the headline. No business: "Independent" with the person's name underneath.
   // Outside providers are companies already. p.name stays as is (the lead form matches on it).
   const head = p => p.outside ? p.name : (p.company || 'Independent');
-  const sub = p => (p.outside || p.company || !p.person ? '' : p.person + ' · ') + (p.type === 'center' ? 'Training center' : (p.verified ? 'Certified ' : '') + (p.company ? 'ServSafe Instructors' : 'ServSafe Instructor'))   // Certified = ServSafe certificate number on file (Verified);   // name only shows under "Independent"
+  const sub = p => (p.outside || p.company || !p.person ? '' : p.person + ' · ') + (p.type === 'center' ? '' : (p.verified ? 'Certified ' : '') + (p.company ? 'ServSafe Instructors' : 'ServSafe Instructor'))   // Certified = ServSafe certificate number on file (Verified);   // name only shows under "Independent"
   const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
 
   /* ---------- questions ---------- */
@@ -346,7 +346,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       p.years ? esc(p.years) + ' years teaching' : ''
     ].filter(Boolean).map(li);
     $('#dlg-body').innerHTML =
-      '<p class="eyebrow">' + esc(sub(p)) + '</p>' +
+      (sub(p) ? '<p class="eyebrow">' + esc(sub(p)) + '</p>' : '') +
       '<h3 id="dlg-t">' + esc(head(p)) + '</h3>' +
       (opts.length ? '<h4>Options</h4><ul class="dlg__opts">' + opts.join('') + '</ul>' : '') +
       (facts.length ? '<h4>Class details</h4><ul>' + facts.join('') + '</ul>' : '') +
