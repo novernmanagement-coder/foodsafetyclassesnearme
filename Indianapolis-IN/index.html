@@ -174,10 +174,10 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   const go = p => !p.booking_url ? '' : p.outside
     ? LEAD_URL + '?provider=' + encodeURIComponent(p.name) + '&dest=' + encodeURIComponent(p.booking_url)
     : p.booking_url;
-  // 11/23/2026: the business is the headline ("Independent" when there's none); the person goes underneath.
+  // 11/23/2026: the business is the headline. No business: "Independent" with the person's name underneath.
   // Outside providers are companies already. p.name stays as is (the lead form matches on it).
   const head = p => p.outside ? p.name : (p.company || 'Independent');
-  const sub = p => (p.outside || !p.person ? '' : p.person + ' · ') + (p.type === 'center' ? 'Training center' : 'Local instructor');
+  const sub = p => (p.outside || p.company || !p.person ? '' : p.person + ' · ') + (p.type === 'center' ? 'Training center' : 'Local instructor');   // name only shows under "Independent"
   const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
 
   /* ---------- questions ---------- */
