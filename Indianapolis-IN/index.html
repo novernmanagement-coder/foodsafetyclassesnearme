@@ -16,6 +16,8 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css?v=1">
 <link rel="stylesheet" href="/assets/city.css?v=18">
+<style>/* 11/23/2026: Book and Call stacked full width, so "Book class" never gets cut off in narrow panels */
+.actions{flex-direction:column;gap:8px}.actions .btn{flex:0 0 auto;width:100%}.actions .phone{text-align:center}</style>
 </head>
 <body>
 <div class="page page--photo" style="background-image:linear-gradient(rgba(20,24,27,.35),rgba(20,24,27,.35)),url('https://foodsafetymadeeasy.com/wp-content/uploads/2026/11/pexels-nick-souza-225420956-12193823-2.jpg')">
@@ -146,7 +148,7 @@
 </div>
 
 <script>
-const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Made Easy)", "options": ["In-person classes", "Group rates available", "Classes at your business"], "type": "instructor", "outside": false, "phone": "(765) 706-4304", "booking_url": "https://foodsafetymadeeasy.com/indiana-booking_landing/", "location": "A location near you or your business", "miles": 22.0, "comes_to_you": true, "appointment_days": "2", "next_classes": ["2026-11-23", "2026-11-24", "2026-11-30", "2026-12-02", "2026-12-04"], "price": 119.0, "class_hours": "4", "includes_exam": true, "includes_book": "SafePrep app (free);Practice tests", "results": "Same day", "languages": ["English"], "years": "20", "last_checked": "2026-11-19"}, {"id": "FSME-IN-00144", "name": "Jose Sanchez T (Doc Bits restaurante)", "type": "instructor", "outside": false, "phone": "(317) 912-8343", "booking_url": "", "location": "Downtown Indianapolis (46204)", "miles": 1.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-11-30"], "price": null, "class_hours": "", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-19"}, {"id": "hospitality-indiana", "name": "Hospitality Indiana", "type": "center", "outside": true, "phone": "(317) 673-4211", "booking_url": "https://www.hospitalityindiana.org/events/servsafe-classes", "location": "Ivy Tech Culinary Center, 2820 N Meridian St", "miles": 3.0, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 165.0, "class_hours": "7.5", "includes_exam": true, "includes_book": "Book", "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "indy-food-safety", "name": "Indy Food Safety Consulting", "type": "center", "outside": true, "phone": "(317) 455-6783", "booking_url": "https://indyfoodsafety.com/", "location": "5945 E 86th St, Indianapolis 46250", "miles": 12.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-12-05", "2027-01-02", "2027-02-06"], "price": 200.0, "class_hours": "3", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "hoosier-hospitality", "name": "Hoosier Hospitality", "type": "center", "outside": true, "phone": "(317) 447-4761", "booking_url": "https://www.hoosierhospitalityconsulting.com/category/servsafe-manager", "location": "Classes around Central Indiana and statewide", "miles": null, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 129.0, "class_hours": "8", "includes_exam": true, "includes_book": "Textbook optional ($168.17 with book)", "results": "Same day", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-23"}];
+const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Made Easy)", "options": ["In-person classes", "Group rates available", "Classes at your business"], "type": "instructor", "outside": false, "phone": "(765) 706-4304", "booking_url": "https://foodsafetymadeeasy.com/indiana-booking_landing/", "location": "A location near you or your business", "miles": 22.0, "comes_to_you": true, "appointment_days": "2", "next_classes": ["2026-11-23", "2026-11-24", "2026-11-30", "2026-12-02", "2026-12-04"], "price": 119.0, "class_hours": "4", "includes_exam": true, "includes_book": "SafePrep app (free);Practice tests", "results": "Same day", "languages": ["English"], "years": "20", "last_checked": "2026-11-19", "person": "Gerry Miller", "company": "Food Safety Made Easy"}, {"id": "FSME-IN-00144", "name": "Jose Sanchez T (Doc Bits restaurante)", "type": "instructor", "outside": false, "phone": "(317) 912-8343", "booking_url": "", "location": "Downtown Indianapolis (46204)", "miles": 1.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-11-30"], "price": null, "class_hours": "", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-19", "person": "Jose Sanchez T", "company": "Doc Bits restaurante"}, {"id": "hospitality-indiana", "name": "Hospitality Indiana", "type": "center", "outside": true, "phone": "(317) 673-4211", "booking_url": "https://www.hospitalityindiana.org/events/servsafe-classes", "location": "Ivy Tech Culinary Center, 2820 N Meridian St", "miles": 3.0, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 165.0, "class_hours": "7.5", "includes_exam": true, "includes_book": "Book", "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "indy-food-safety", "name": "Indy Food Safety Consulting", "type": "center", "outside": true, "phone": "(317) 455-6783", "booking_url": "https://indyfoodsafety.com/", "location": "5945 E 86th St, Indianapolis 46250", "miles": 12.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-12-05", "2027-01-02", "2027-02-06"], "price": 200.0, "class_hours": "3", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "hoosier-hospitality", "name": "Hoosier Hospitality", "type": "center", "outside": true, "phone": "(317) 447-4761", "booking_url": "https://www.hoosierhospitalityconsulting.com/category/servsafe-manager", "location": "Classes around Central Indiana and statewide", "miles": null, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 129.0, "class_hours": "8", "includes_exam": true, "includes_book": "Textbook optional ($168.17 with book)", "results": "Same day", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-23"}];
 const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-at-home/';
 const CITY_KEY = 'Indianapolis-IN';
 // 11/23/2026: outside providers (training centers we list from their public info) go through a quick lead
@@ -172,6 +174,10 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   const go = p => !p.booking_url ? '' : p.outside
     ? LEAD_URL + '?provider=' + encodeURIComponent(p.name) + '&dest=' + encodeURIComponent(p.booking_url)
     : p.booking_url;
+  // 11/23/2026: the business is the headline ("Independent" when there's none); the person goes underneath.
+  // Outside providers are companies already. p.name stays as is (the lead form matches on it).
+  const head = p => p.outside ? p.name : (p.company || 'Independent');
+  const sub = p => (p.outside || !p.person ? '' : p.person + ' · ') + (p.type === 'center' ? 'Training center' : 'Local instructor');
   const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
 
   /* ---------- questions ---------- */
@@ -298,8 +304,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
     let h = '<thead><tr><th class="rowh"></th>' + list.map((f, i) =>
-      '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="pname">' + esc(f.p.name) + '</div><div class="ptype">' +
-      (f.p.type === 'center' ? 'Training center' : 'Local instructor') + '</div>' +
+      '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="pname">' + esc(head(f.p)) + '</div><div class="ptype">' +
+      esc(sub(f.p)) + '</div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</th>').join('') + '</tr></thead><tbody>';
     rows.forEach(([label, fn]) => {
       h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td class="pc' + i + (i === 0 ? ' top' : '') + '">' + fn(f) + '</td>').join('') + '</tr>';
@@ -309,8 +315,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     // Phones (11/21/2026): the same providers as stacked cards, one per row, instead of narrow columns
     $('#pcards').innerHTML = list.map((f, i) =>
       '<article class="pcard pc' + i + (i === 0 ? ' pcard--top' : '') + '">' +
-      '<div class="pcard__head"><div><div class="pname">' + esc(f.p.name) + '</div><div class="ptype">' +
-      (f.p.type === 'center' ? 'Training center' : 'Local instructor') + '</div>' +
+      '<div class="pcard__head"><div><div class="pname">' + esc(head(f.p)) + '</div><div class="ptype">' +
+      esc(sub(f.p)) + '</div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</div>' +
       '<div class="pcard__price">' + rows[2][1](f) + '</div></div>' +
       '<div class="pcard__when"><span class="pcard__lbl">Next class</span> ' + rows[1][1](f) + '</div>' +
@@ -340,8 +346,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       p.years ? esc(p.years) + ' years teaching' : ''
     ].filter(Boolean).map(li);
     $('#dlg-body').innerHTML =
-      '<p class="eyebrow">' + (p.type === 'center' ? 'Training center' : 'Local instructor') + '</p>' +
-      '<h3 id="dlg-t">' + esc(p.name) + '</h3>' +
+      '<p class="eyebrow">' + esc(sub(p)) + '</p>' +
+      '<h3 id="dlg-t">' + esc(head(p)) + '</h3>' +
       (opts.length ? '<h4>Options</h4><ul class="dlg__opts">' + opts.join('') + '</ul>' : '') +
       (facts.length ? '<h4>Class details</h4><ul>' + facts.join('') + '</ul>' : '') +
       '<div class="dlg__btns">' +
