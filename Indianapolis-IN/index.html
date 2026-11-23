@@ -338,6 +338,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     const opts = (p.options || []).map(o => li(esc(o)));
     const facts = [
       p.comes_to_you ? 'A location near you or your business' : p.location ? esc(p.location) : '',
+      p.comes_to_you ? 'Request a class date &amp; location' : '',
       Number.isFinite(f.price) ? 'Price: ' + money(f.price) : '',
       p.class_hours ? 'Class length: ' + esc(p.class_hours) + ' hours' : '',
       p.includes_exam ? 'Exam included' : '',
