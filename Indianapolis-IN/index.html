@@ -364,7 +364,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     if (!f.dates.length) {   // no posted classes: skip the calendar, point them to the provider
       const btn = f.p.booking_url ? '<a class="btn btn--line btn--xs" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">See website</a>'
         : f.p.phone ? '<a class="btn btn--line btn--xs" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a>' : '';
-      return '<div class="mc mc--none"><p>' + (f.appt !== null ? 'Schedules by appointment' : 'No classes posted') + '</p>' + btn + '</div>';
+      return '<div class="mc mc--none">' + (f.appt !== null ? '<p>Schedules by appointment</p>' : '') + btn + '</div>';
     }
     const on = new Set(f.dates.map(key));
     const start = new Date(today.getTime() - today.getDay() * DAY);   // Sunday of this week
