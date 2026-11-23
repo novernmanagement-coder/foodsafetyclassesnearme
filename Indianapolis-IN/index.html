@@ -305,8 +305,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
     let h = '<thead><tr><th class="rowh"></th>' + list.map((f, i) =>
-      '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="pname">' + esc(head(f.p)) + '</div><div class="ptype">' +
-      esc(sub(f.p)) + '</div>' +
+      '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="phd"><div class="pname">' + esc(head(f.p)) + '</div><div class="ptype">' +
+      esc(sub(f.p)) + '</div></div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</th>').join('') + '</tr></thead><tbody>';
     rows.forEach(([label, fn]) => {
       h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td class="pc' + i + (i === 0 ? ' top' : '') + '">' + fn(f) + '</td>').join('') + '</tr>';
