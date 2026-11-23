@@ -163,3 +163,9 @@
 .cmp{margin:0;width:100%;border-spacing:10px 0}
 .cmp-scroll{margin:0 -10px;padding:0}
 @media (min-width:701px){.cmp-scroll{overflow-x:visible}.cmp{min-width:0}}
+
+.bestarrow{margin-top:84px;color:#1D6FD8;font-weight:700;font-size:14px;text-align:right}
+.bestarrow span{display:block;margin-bottom:2px}
+.bestarrow svg{width:100%;max-width:120px;height:40px;fill:#1D6FD8;animation:bestslide 1.2s ease-in-out infinite}
+@keyframes bestslide{0%{transform:translateX(-14px);opacity:.55}60%{transform:translateX(6px);opacity:1}100%{transform:translateX(-14px);opacity:.55}}
+@media (prefers-reduced-motion:reduce){.bestarrow svg{animation:none}}

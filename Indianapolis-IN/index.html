@@ -304,7 +304,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
           (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
-    let h = '<thead><tr><th class="rowh"></th>' + list.map((f, i) =>
+    let h = '<thead><tr><th class="rowh"><div class="bestarrow" aria-hidden="true"><span>Best choice</span><svg viewBox="0 0 120 40"><path d="M0 14h88V2l32 18-32 18V26H0z"/></svg></div></th>' + list.map((f, i) =>
       '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="phd"><div class="pname">' + esc(head(f.p)) + '</div><div class="ptype">' +
       esc(sub(f.p)) + '</div></div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</th>').join('') + '</tr></thead><tbody>';
