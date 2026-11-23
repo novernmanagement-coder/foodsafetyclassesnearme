@@ -149,6 +149,9 @@
 const PROVIDERS = [{"id": "FSME-IN-00000", "name": "Gerry Miller (Food Safety Made Easy)", "options": ["In-person classes", "Group rates available", "Classes at your business"], "type": "instructor", "outside": false, "phone": "(765) 706-4304", "booking_url": "https://foodsafetymadeeasy.com/indiana-booking_landing/", "location": "A location near you or your business", "miles": 22.0, "comes_to_you": true, "appointment_days": "2", "next_classes": ["2026-11-23", "2026-11-24", "2026-11-30", "2026-12-02", "2026-12-04"], "price": 119.0, "class_hours": "4", "includes_exam": true, "includes_book": "SafePrep app (free);Practice tests", "results": "Same day", "languages": ["English"], "years": "20", "last_checked": "2026-11-19"}, {"id": "FSME-IN-00144", "name": "Jose Sanchez T (Doc Bits restaurante)", "type": "instructor", "outside": false, "phone": "(317) 912-8343", "booking_url": "", "location": "Downtown Indianapolis (46204)", "miles": 1.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-11-30"], "price": null, "class_hours": "", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English", "Spanish"], "years": "", "last_checked": "2026-11-19"}, {"id": "hospitality-indiana", "name": "Hospitality Indiana", "type": "center", "outside": true, "phone": "(317) 673-4211", "booking_url": "https://www.hospitalityindiana.org/events/servsafe-classes", "location": "Ivy Tech Culinary Center, 2820 N Meridian St", "miles": 3.0, "comes_to_you": false, "appointment_days": "", "next_classes": [], "price": 165.0, "class_hours": "7.5", "includes_exam": true, "includes_book": "Book", "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}, {"id": "indy-food-safety", "name": "Indy Food Safety Consulting", "type": "center", "outside": true, "phone": "", "booking_url": "https://indyfoodsafety.com/", "location": "5945 E 86th St, Indianapolis 46250", "miles": 12.0, "comes_to_you": false, "appointment_days": "", "next_classes": ["2026-12-05", "2027-01-02", "2027-02-06"], "price": 200.0, "class_hours": "3", "includes_exam": true, "includes_book": null, "results": "", "languages": ["English"], "years": "", "last_checked": "2026-11-19"}];
 const ONLINE_URL = 'https://foodsafetymadeeasy.com/servsafe-at-home/';
 const CITY_KEY = 'Indianapolis-IN';
+// 11/23/2026: outside providers (training centers we list from their public info) go through a quick lead
+// form on FSME first (Fluent Form 6), then on to their site. The provider gets the lead by email.
+const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
 /* Food Safety Classes Near Me — city page logic (inlined into each city page) */
 (function () {
   const A = { mode: null, when: null, pref: null };
@@ -165,6 +168,10 @@ const CITY_KEY = 'Indianapolis-IN';
   const fmt = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   const money = n => '$' + (Number(n) % 1 ? Number(n).toFixed(2) : Number(n));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  // Where a provider's Book / See website button goes
+  const go = p => !p.booking_url ? '' : p.outside
+    ? LEAD_URL + '?provider=' + encodeURIComponent(p.name) + '&dest=' + encodeURIComponent(p.booking_url)
+    : p.booking_url;
   const ordinal = n => n + (['th', 'st', 'nd', 'rd'][(n % 100 - 20) % 10] || ['th', 'st', 'nd', 'rd'][n % 100] || 'th');
 
   /* ---------- questions ---------- */
@@ -286,7 +293,7 @@ const CITY_KEY = 'Indianapolis-IN';
       }],
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
       ['', f => '<div class="actions">' +
-          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">Book class</a>' : '') +
+          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">Book class</a>' : '') +
           (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
@@ -338,7 +345,7 @@ const CITY_KEY = 'Indianapolis-IN';
       (opts.length ? '<h4>Options</h4><ul class="dlg__opts">' + opts.join('') + '</ul>' : '') +
       (facts.length ? '<h4>Class details</h4><ul>' + facts.join('') + '</ul>' : '') +
       '<div class="dlg__btns">' +
-      (p.booking_url ? '<a class="btn btn--green" href="' + esc(p.booking_url) + '" target="_blank" rel="noopener">Book class</a>' : '') +
+      (p.booking_url ? '<a class="btn btn--green" href="' + esc(go(p)) + '" target="_blank" rel="noopener">Book class</a>' : '') +
       (p.phone ? '<a class="btn btn--line" href="tel:' + esc(p.phone.replace(/\D/g, '')) + '">Call ' + esc(p.phone) + '</a>' : '') +
       '</div>' + (p.outside ? '<p class="checked">Details last checked ' + fmt(parse(p.last_checked)) + '</p>' : '');
     dlg.showModal();
@@ -348,7 +355,7 @@ const CITY_KEY = 'Indianapolis-IN';
   const key = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   function miniCal(f) {
     if (!f.dates.length) {   // no posted classes: skip the calendar, point them to the provider
-      const btn = f.p.booking_url ? '<a class="btn btn--line btn--xs" href="' + esc(f.p.booking_url) + '" target="_blank" rel="noopener">See website</a>'
+      const btn = f.p.booking_url ? '<a class="btn btn--line btn--xs" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">See website</a>'
         : f.p.phone ? '<a class="btn btn--line btn--xs" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a>' : '';
       return '<div class="mc mc--none"><p>' + (f.appt !== null ? 'Schedules by appointment' : 'No classes posted') + '</p>' + btn + '</div>';
     }
