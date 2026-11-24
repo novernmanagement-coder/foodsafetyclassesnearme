@@ -173,10 +173,42 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   const fmt = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   const money = n => '$' + (Number(n) % 1 ? Number(n).toFixed(2) : Number(n));
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  // Where a provider's Book / See website button goes
-  const go = p => !p.booking_url ? '' : p.outside
-    ? LEAD_URL + '?provider=' + encodeURIComponent(p.name) + '&dest=' + encodeURIComponent(p.booking_url)
-    : p.booking_url;
+  // Where a provider's Book / See website button goes.
+  // 11/23/2026: EVERY provider goes through the quick lead form first (was outside providers only), so we
+  // capture the student and the provider gets a lead email. No booking link: the form brings them back here.
+  const go = p => LEAD_URL + '?provider=' + encodeURIComponent(p.name) +
+    '&dest=' + encodeURIComponent(p.booking_url || (location.origin + location.pathname + '?sent=1'));
+  const bookTxt = p => p._online ? 'Sign up' : p.booking_url ? 'Book class' : 'Request a class';
+  // Button attributes for tracking (which provider, which button)
+  const trk = (p, act) => ' data-pid="' + esc(p.id) + '" data-act="' + act + '"';
+
+  /* ---------- Mixpanel (11/23/2026): cards shown + taps, per provider, for the providers' results emails ---------- */
+  const MP_TOKEN = 'f0e26131548137dd7fb8522bd6b88536';
+  const visitor = (() => {
+    let v = '';
+    try { v = localStorage.getItem('fscnm_vid') || ''; } catch (e) {}
+    if (!v) { v = 'fscnm-' + Math.random().toString(36).slice(2) + Date.now().toString(36); try { localStorage.setItem('fscnm_vid', v); } catch (e) {} }
+    return v;
+  })();
+  function mp(event, props) {
+    try {
+      const data = JSON.stringify([{ event, properties: Object.assign({
+        token: MP_TOKEN, distinct_id: visitor, time: Date.now(),
+        $insert_id: Math.random().toString(36).slice(2) + Date.now().toString(36),
+        site: 'fscnm', city: CITY_KEY, mode: A.mode, when: A.when, pref: A.pref
+      }, props) }]);
+      const body = 'data=' + encodeURIComponent(data);
+      const url = 'https://api-js.mixpanel.com/track/?ip=1';
+      if (!(navigator.sendBeacon && navigator.sendBeacon(url, new Blob([body], { type: 'application/x-www-form-urlencoded' })))) {
+        fetch(url, { method: 'POST', mode: 'no-cors', keepalive: true, headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body });
+      }
+    } catch (e) {}
+  }
+  const shown = new Set();   // one "shown" per provider per set of answers, even when the list redraws
+  document.addEventListener('click', e => {
+    const a = e.target.closest('[data-pid][data-act]');
+    if (a) mp('Compare Tap', { provider_id: a.dataset.pid, action: a.dataset.act });
+  });
   // 11/23/2026: the business is the headline. No business: "Independent" with the person's name underneath.
   // Outside providers are companies already. p.name stays as is (the lead form matches on it).
   const head = p => p.outside ? p.name : (p.company || 'Independent Instructor');
@@ -320,8 +352,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       }],
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
       ['', f => '<div class="actions">' +
-          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">' + (f.p._online ? 'Sign up' : 'Book class') + '</a>' : '') +
-          (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
+          ((f.p.booking_url || !f.p.outside) ? '<a class="btn btn--green" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener"' + trk(f.p, 'book') + '>' + bookTxt(f.p) + '</a>' : '') +
+          (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '"' + trk(f.p, 'call') + '>Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
     let h = '<thead><tr><th class="rowh"><div class="bestarrow" aria-hidden="true"><span>' + (list.length >= 5 ? 'Top 5 choices' : 'Your choices') + '</span><svg viewBox="0 0 120 40"><path d="M0 14h88V2l32 18-32 18V26H0z"/></svg></div></th>' + list.map((f, i) =>
@@ -331,7 +363,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     rows.forEach(([label, fn]) => {
       h += '<tr><th class="rowh" scope="row">' + label + '</th>' + list.map((f, i) => '<td class="pc' + i + (i === 0 ? ' top' : '') + '">' + fn(f) + '</td>').join('') + '</tr>';
     });
-    h += '<tr class="detrow"><th class="rowh"></th>' + list.map((f, i) => '<td class="pc' + i + (i === 0 ? ' top' : '') + '"><button class="btn btn--line btn--xs pdet" data-det="' + esc(f.p.id) + '">Details</button></td>').join('') + '</tr>';
+    h += '<tr class="detrow"><th class="rowh"></th>' + list.map((f, i) => '<td class="pc' + i + (i === 0 ? ' top' : '') + '"><button class="btn btn--line btn--xs pdet" data-det="' + esc(f.p.id) + '"' + trk(f.p, 'details') + '>Details</button></td>').join('') + '</tr>';
     $('#cmp').innerHTML = h + '</tbody>';
     // Phones (11/21/2026): the same providers as stacked cards, one per row, instead of narrow columns
     $('#pcards').innerHTML = list.map((f, i) =>
@@ -343,9 +375,13 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       '<div class="pcard__when"><span class="pcard__lbl">Next class</span> ' + rows[1][1](f) + '</div>' +
       rows[0][1](f) +
       '<div class="pcard__foot">' + rows[3][1](f) +
-      '<button class="btn btn--line btn--xs pdet" data-det="' + esc(f.p.id) + '">Details</button></div>' +
+      '<button class="btn btn--line btn--xs pdet" data-det="' + esc(f.p.id) + '"' + trk(f.p, 'details') + '>Details</button></div>' +
       '</article>').join('');
     $$('[data-det]', $('#results')).forEach(b => b.addEventListener('click', () => details(list.find(f => f.p.id === b.dataset.det))));
+    list.forEach((f, i) => {
+      const k = [A.mode, A.when, A.pref, f.p.id].join('|');
+      if (!shown.has(k)) { shown.add(k); mp('Compare Card Shown', { provider_id: f.p.id, rank: i + 1, online: !!f.p._online }); }
+    });
   }
 
   /* ---------- Class details popup ---------- */
@@ -374,8 +410,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       (opts.length ? '<h4>Options</h4><ul class="dlg__opts">' + opts.join('') + '</ul>' : '') +
       (facts.length ? '<h4>Class details</h4><ul>' + facts.join('') + '</ul>' : '') +
       '<div class="dlg__btns">' +
-      (p.booking_url ? '<a class="btn btn--green" href="' + esc(go(p)) + '" target="_blank" rel="noopener">' + (p._online ? 'Sign up' : 'Book class') + '</a>' : '') +
-      (p.phone ? '<a class="btn btn--line" href="tel:' + esc(p.phone.replace(/\D/g, '')) + '">Call ' + esc(p.phone) + '</a>' : '') +
+      ((p.booking_url || !p.outside) ? '<a class="btn btn--green" href="' + esc(go(p)) + '" target="_blank" rel="noopener"' + trk(p, 'book') + '>' + bookTxt(p) + '</a>' : '') +
+      (p.phone ? '<a class="btn btn--line" href="tel:' + esc(p.phone.replace(/\D/g, '')) + '"' + trk(p, 'call') + '>Call ' + esc(p.phone) + '</a>' : '') +
       '</div>' + (p.outside ? '<p class="checked">Details last checked ' + fmt(parse(p.last_checked)) + '</p>' : '');
     dlg.showModal();
   }
@@ -384,8 +420,8 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   const key = d => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
   function miniCal(f) {
     if (!f.dates.length) {   // no posted classes: skip the calendar, point them to the provider
-      const btn = f.p.booking_url ? '<a class="btn btn--line btn--xs" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">See website</a>'
-        : f.p.phone ? '<a class="btn btn--line btn--xs" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a>' : '';
+      const btn = f.p.booking_url ? '<a class="btn btn--line btn--xs" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener"' + trk(f.p, 'website') + '>See website</a>'
+        : f.p.phone ? '<a class="btn btn--line btn--xs" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '"' + trk(f.p, 'call') + '>Call</a>' : '';
       return '<div class="mc mc--none">' + (f.p._online ? '<p>' + oxOf(f.p).map(k => OX[k].cell).join('<br>or ') + '</p>' : (f.appt !== null ? '<p>Schedules by appointment</p>' : '') + btn) + '</div>';
     }
     const on = new Set(f.dates.map(key));
@@ -405,6 +441,16 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     g += '</div>';
     if (!f.dates.some(d => d <= end)) g += '<div class="mc__note">' + (f.appt !== null ? 'By appointment' : f.dates.length ? 'Next: ' + fmt(f.dates[0]) : 'No dates posted') + '</div>';
     return g + '</div>';
+  }
+
+  // Back from the lead form for a provider with no booking link ("Request a class"): say it went through
+  if (new URLSearchParams(location.search).get('sent') === '1') {
+    const t = document.createElement('div');
+    t.setAttribute('role', 'status');
+    t.style.cssText = 'position:fixed;left:50%;top:16px;transform:translateX(-50%);z-index:50;background:#1f7a4d;color:#fff;padding:12px 18px;border-radius:10px;box-shadow:0 6px 20px rgba(0,0,0,.2);font-weight:600;max-width:92vw;text-align:center';
+    t.textContent = 'Sent! The instructor will contact you to set up your class.';
+    document.body.appendChild(t);
+    setTimeout(() => t.remove(), 7000);
   }
 
   // shortcut link: ?answers=person,asap,any jumps straight to results
