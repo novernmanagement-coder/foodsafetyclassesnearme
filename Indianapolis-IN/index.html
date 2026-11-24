@@ -240,6 +240,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   };
   const BOOL = new Set(['sameDay', 'comes', 'room']);
   function plan() {
+    if (A.mode === 'online') return ['price', 'sameDay', 'years'];   // online: everyone can start today, so compare on price
     const base = { asap: ['soonest', 'count', 'sameDay'], week: ['count', 'miles', 'price'], later: ['price', 'years', 'miles'] }[A.when];
     const extra = A.pref === 'instructor' ? ['comes'] : A.pref === 'center' ? ['room'] : [];
     return [base[0], ...extra, ...base.slice(1), 'soonest', 'miles', 'price', 'hours', 'years', 'sameDay'].filter((a, i, l) => l.indexOf(a) === i);
@@ -312,11 +313,11 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       }],
       ['Price', f => Number.isFinite(f.price) ? money(f.price) : '<span class="no">Ask</span>'],
       ['', f => '<div class="actions">' +
-          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">Book class</a>' : '') +
+          (f.p.booking_url ? '<a class="btn btn--green" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">' + (f.p._online ? 'Sign up' : 'Book class') + '</a>' : '') +
           (f.p.phone ? '<a class="btn btn--line" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a><span class="phone">' + esc(f.p.phone) + '</span>' : '') +
           '</div>' + (f.p.outside ? '<p class="checked">Details last checked ' + fmt(parse(f.p.last_checked)) + '</p>' : '')]
     ];
-    let h = '<thead><tr><th class="rowh"><div class="bestarrow" aria-hidden="true"><span>Top 5 choices</span><svg viewBox="0 0 120 40"><path d="M0 14h88V2l32 18-32 18V26H0z"/></svg></div></th>' + list.map((f, i) =>
+    let h = '<thead><tr><th class="rowh"><div class="bestarrow" aria-hidden="true"><span>' + (list.length >= 5 ? 'Top 5 choices' : 'Your choices') + '</span><svg viewBox="0 0 120 40"><path d="M0 14h88V2l32 18-32 18V26H0z"/></svg></div></th>' + list.map((f, i) =>
       '<th class="pc' + i + (i === 0 ? ' top' : '') + '"><div class="phd"><div class="pname">' + esc(head(f.p)) + '</div><div class="ptype">' +
       esc(sub(f.p)) + '</div></div>' +
       (why.get(f) ? '<span class="why">' + esc(why.get(f)) + '</span>' : '') + '</th>').join('') + '</tr></thead><tbody>';
@@ -366,7 +367,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
       (opts.length ? '<h4>Options</h4><ul class="dlg__opts">' + opts.join('') + '</ul>' : '') +
       (facts.length ? '<h4>Class details</h4><ul>' + facts.join('') + '</ul>' : '') +
       '<div class="dlg__btns">' +
-      (p.booking_url ? '<a class="btn btn--green" href="' + esc(go(p)) + '" target="_blank" rel="noopener">Book class</a>' : '') +
+      (p.booking_url ? '<a class="btn btn--green" href="' + esc(go(p)) + '" target="_blank" rel="noopener">' + (p._online ? 'Sign up' : 'Book class') + '</a>' : '') +
       (p.phone ? '<a class="btn btn--line" href="tel:' + esc(p.phone.replace(/\D/g, '')) + '">Call ' + esc(p.phone) + '</a>' : '') +
       '</div>' + (p.outside ? '<p class="checked">Details last checked ' + fmt(parse(p.last_checked)) + '</p>' : '');
     dlg.showModal();
@@ -378,7 +379,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     if (!f.dates.length) {   // no posted classes: skip the calendar, point them to the provider
       const btn = f.p.booking_url ? '<a class="btn btn--line btn--xs" href="' + esc(go(f.p)) + '" target="_blank" rel="noopener">See website</a>'
         : f.p.phone ? '<a class="btn btn--line btn--xs" href="tel:' + esc(f.p.phone.replace(/\D/g, '')) + '">Call</a>' : '';
-      return '<div class="mc mc--none">' + (f.p._online ? '<p>Start any day, online</p>' : f.appt !== null ? '<p>Schedules by appointment</p>' : '') + btn + '</div>';
+      return '<div class="mc mc--none">' + (f.p._online ? '<p>Start any day, online</p>' : (f.appt !== null ? '<p>Schedules by appointment</p>' : '') + btn) + '</div>';
     }
     const on = new Set(f.dates.map(key));
     const start = new Date(today.getTime() - today.getDay() * DAY);   // Sunday of this week
