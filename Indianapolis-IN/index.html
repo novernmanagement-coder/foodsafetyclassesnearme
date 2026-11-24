@@ -176,7 +176,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   // Where a provider's Book / See website button goes.
   // 11/23/2026: EVERY provider goes through the quick lead form first (was outside providers only), so we
   // capture the student and the provider gets a lead email. No booking link: the form brings them back here.
-  const go = p => LEAD_URL + '?provider=' + encodeURIComponent(p.name) +
+  const go = p => LEAD_URL + '?provider=' + encodeURIComponent(p.outside ? p.name : (p.company || p.person || p.name)) +
     '&dest=' + encodeURIComponent(p.booking_url || (location.origin + location.pathname + '?sent=1'));
   const bookTxt = p => p._online ? 'Sign up' : p.booking_url ? 'Book class' : 'Request a class';
   // Button attributes for tracking (which provider, which button)
