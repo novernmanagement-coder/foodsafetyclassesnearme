@@ -469,6 +469,12 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
   fetch(FEED_URL, { cache: 'no-cache' }).then(r => r.ok ? r.json() : null).then(list => {
     if (!Array.isArray(list) || !list.length) return;
     list.forEach(p => { if (p.booking_url && !/^https?:\/\//i.test(p.booking_url)) p.booking_url = 'https://' + p.booking_url; });
+    // 11/24/2026: the feed doesn't carry the online fields yet, so Online students saw no matches once it loaded.
+    // Keep each provider's online details from the built-in list, and keep online-only listings (ServSafe) the feed doesn't have.
+    const OKEYS = ['online', 'online_only', 'online_price', 'online_url', 'online_exam', 'online_hours'];
+    const base = new Map(PROVIDERS.map(p => [p.id, p]));
+    list.forEach(p => { const b = base.get(p.id); if (b && p.online == null) OKEYS.forEach(k => { if (p[k] == null && b[k] != null) p[k] = b[k]; }); });
+    PROVIDERS.forEach(b => { if (b.online_only && !list.some(p => p.id === b.id)) list.push(b); });
     PROVIDERS = list;
     if (!$('#results').hidden) render();
   }).catch(() => {});
