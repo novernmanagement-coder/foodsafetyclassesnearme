@@ -352,6 +352,7 @@ const LEAD_URL = 'https://foodsafetymadeeasy.com/provider-direct/';
     $('#dlg-body').innerHTML =
       (sub(p) ? '<p class="eyebrow">' + esc(sub(p)) + '</p>' : '') +
       '<h3 id="dlg-t">' + esc(head(p)) + '</h3>' +
+      (p.bio ? '<h4>About</h4><p class="dlg__about" style="margin:0 0 14px;line-height:1.5;white-space:pre-line">' + esc(String(p.bio).trim()) + '</p>' : '') +
       (opts.length ? '<h4>Options</h4><ul class="dlg__opts">' + opts.join('') + '</ul>' : '') +
       (facts.length ? '<h4>Class details</h4><ul>' + facts.join('') + '</ul>' : '') +
       '<div class="dlg__btns">' +
